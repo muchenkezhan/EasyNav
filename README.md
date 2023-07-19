@@ -32,6 +32,15 @@ wordpress + vue3  技术栈，前后端分离主题项目
 
 静态页面即可，不做要求
 
+ngix配置代码：
+
+```js
+     location /jwt-auth{
+        proxy_pass https://xxxx.xx/wp-json/jwt-auth;
+   }
+// https://xxxx.xx  改为你的网址
+```
+
 
 
 # vue配置说明

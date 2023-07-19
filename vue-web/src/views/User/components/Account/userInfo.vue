@@ -5,7 +5,7 @@
             <h6 class="mt-4 text-slate-400 text-center">管理与您的帐户关联的电子邮件地址和密码</h6>
         </div>
         <div class=" mt-12">
-            <form action="/login" class="mx-auto max-w-md w-full">
+            <form class="mx-auto max-w-md w-full">
                 <div class="mb-6"><label for="email"
                         class="block text-sm font-semibold leading-6 text-gray-900">用户名</label><input title="不能修改用户名"
                         disabled type="text" id="name"

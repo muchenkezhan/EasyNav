@@ -3,7 +3,7 @@
     <header class="inset-x-0 top-0 z-50">
         <nav class="backdrop-blur mx-auto flex items-center justify-between p-4 lg:px-8" aria-label="Global">
             <div class="flex lg:flex-1">
-                <a v-show="route.name != 'index'" @click="urlDiyDrawer" href="#" class="-m-1.5 p-1.5 text-gray-600">
+                <a v-show="route.name != 'index'" @click="urlDiyDrawer" href="javascript:;" class="-m-1.5 p-1.5 text-gray-600">
                     <el-icon class="md:hidden " @click="openWapMenu" size="20">
                         <Operation />
                     </el-icon>
@@ -27,12 +27,12 @@
             </div>
 
             <div class="hidden lg:flex lg:flex-1 lg:justify-end" :class="{'text-gray-50':route.name == 'index'}">
-                <a @click="openUserSet" href="#" class="text-sm font-semibold leading-6 pr-3" :class="route.name == 'index' && bgImgUrl ? 'text-white' : 'text-gray-800'">
+                <a @click="openUserSet" href="javascript:;" class="text-sm font-semibold leading-6 pr-3" :class="route.name == 'index' && bgImgUrl ? 'text-white' : 'text-gray-800'">
                     <el-icon size="20">
                         <UserFilled />
                     </el-icon>
                 </a>
-                <a @click="urlListDrawer" href="#" class="text-sm font-semibold leading-6" :class="route.name == 'index' && bgImgUrl ? 'text-white' : 'text-gray-800'">
+                <a @click="urlListDrawer" href="javascript:;" class="text-sm font-semibold leading-6" :class="route.name == 'index' && bgImgUrl ? 'text-white' : 'text-gray-800'">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                         aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round"

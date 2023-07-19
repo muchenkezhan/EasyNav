@@ -8,7 +8,7 @@
                             <ul role="list" class="-mx-2 space-y-1">
 
                                 <li v-for="(item, index) in menuList">
-                                    <a :class="{'active':activeIndex==index}" @click="to_path(item.route,index)" href="#"
+                                    <a :class="{'active':activeIndex==index}" @click="to_path(item.route,index)" href="javascript:;"
                                         class="hover:bg-gray-50 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700">
                                         {{ item.title }}
                                     </a>

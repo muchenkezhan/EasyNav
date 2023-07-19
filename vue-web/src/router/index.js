@@ -1,19 +1,17 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Layout from '../layout/index.vue'
-import Index from '@/views/Index/index.vue'
-import User from '@/views/User/index.vue'
-import Account from '@/views/User/components/Account/index.vue'
-import Personalise from '@/views/User/components/Personalise/index.vue'
-import Preferences from '@/views/User/components/Preferences/index.vue'
-import Server from '@/views/User/components/Server/index.vue'
+import { createRouter, createWebHashHistory } from 'vue-router';
+import Layout from '../layout/index.vue';
+import Index from '@/views/Index/index.vue';
+import User from '@/views/User/index.vue';
+import Account from '@/views/User/components/Account/index.vue';
+import Personalise from '@/views/User/components/Personalise/index.vue';
+import Preferences from '@/views/User/components/Preferences/index.vue';
+import Server from '@/views/User/components/Server/index.vue';
 
 const router = createRouter({
-  history: createWebHistory(),
-  mode: 'history',
+  history: createWebHashHistory(),
   routes: [
     {
       path: '',
-      name: '/',
       component: Layout,
       children: [
         {
@@ -59,7 +57,6 @@ const router = createRouter({
 
     }
   ],
+});
 
-})
-
-export default router
+export default router;
