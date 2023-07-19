@@ -4,6 +4,8 @@ wordpress + vue3  技术栈，前后端分离主题项目
 
  This template was developed in Vue 3 Wordpress. 
 
+![image-20230719171101192](C:\Users\Qzdy\AppData\Roaming\Typora\typora-user-images\image-20230719171101192.png)
+
 # 目录说明
 
 ### vue-web（目录）：
