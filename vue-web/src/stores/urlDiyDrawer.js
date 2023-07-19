@@ -199,18 +199,21 @@ export const useUrlDiyStore = defineStore('urlDiy', () => {
                     return a.sort_order - b.sort_order;
                 }
             }).map(function (obj) {
-                obj.child.sort(function (a, b) {
-                    if (a.sort_order == 0 && b.sort_order == 0) {
-                        return 0;
-                    } else if (a.sort_order == 0) {
-                        return 1;
-                    } else if (b.sort_order == 0) {
-                        return -1;
-                    } else {
-                        return a.sort_order - b.sort_order;
-                    }
-                });
+                if(obj.child){
+                    obj.child.sort(function (a, b) {
+                        if (a.sort_order == 0 && b.sort_order == 0) {
+                            return 0;
+                        } else if (a.sort_order == 0) {
+                            return 1;
+                        } else if (b.sort_order == 0) {
+                            return -1;
+                        } else {
+                            return a.sort_order - b.sort_order;
+                        }
+                    });
+                }
                 return obj;
+               
             });
         }else if(res.code == 200 && res.data == 'noData'){
             categoryList.value = []

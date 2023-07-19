@@ -25,9 +25,9 @@ export default defineConfig({
     //  配置代理跨域
     server: {
       proxy: {
-        // https://xxxx.xx  更改为自己的网站
+        // https://navadmin.aj0.cn  更改为自己的网站
         '/jwt-auth': {
-          target: 'https://xxxx.xx/wp-json/',
+          target: 'https://navadmin.117112.xyz/wp-json/',
           changeOrigin: true,
         },
       },

@@ -1,7 +1,7 @@
 <template>
     <div class="conter">
-        <!-- <div  class="body-back bg-blue-50"></div> -->
-        <div v-if="bgImgUrl" class="body-back bg-gray-500" :style="{ backgroundImage: `url(${bgImgUrl})` }"></div>
+        <div v-if="userStoreData.userdata.token" class="body-back bg-gray-500" :style="{ backgroundImage: `url(${personalizationPina.bg_img})` }"></div>
+        <div v-else class="body-back bg-gray-500" :style="{ backgroundImage: `url(${basicInformationData.basicInformationDate.bg_img})` }"></div>
         <div class="main">
             <div class=" flex items-center justify-center">
                 <div class="logo ">
@@ -51,7 +51,7 @@
                         <ul
                             class="grid grid-cols-3 gap-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 justify-items-center gap-x-px">
                             <li class="text-center pt-2 pl-1 pr-1 flex items-center flex-col item relative"
-                                :class="bgImgUrl ? 'text-white hover:text-gray-200' : 'text-gray-800  hover:text-gray-200'"
+                                :class="personalizationPina.bg_img || basicInformationData.basicInformationDate.bg_img ? 'text-white hover:text-gray-200' : 'text-gray-800  hover:text-gray-200'"
                                 v-for="(item, index) in useInexUrlListStoreData.url_List" @click="goToUrl(item.url)">
                                 <div class="control icon-only absolute">
                                     <div class="flex">

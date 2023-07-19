@@ -72,8 +72,6 @@ const set_bg_img_pina = () => {
     }
     personalizationPina.editSettingPersonalise(img_url_input.value)
 }
-
-
 const activeName = ref('1')
 const value = ref('1')
 const options = [
@@ -81,14 +79,11 @@ const options = [
         value: '1',
         label: '在线图片',
     },
-    
 ]
-// 
 // 主题颜色
 const color_value = ref(60)
 
 // 上传图片
-
 const fileList = ref([
     {
         name: 'food.jpeg',
@@ -97,13 +92,9 @@ const fileList = ref([
 ])
 
 const uploadRef = ref()
-
 const submitUpload = () => {
     //   uploadRef.value.submit()
-    console.log(fileList.value[0]);
 }
-
-
 
 </script>
 
