@@ -8,6 +8,7 @@ add_action('rest_api_init', function () {
 });
 
 function custom_favicon_api_get_favicon($request) {
+       $url = $request['url']; 
  if (!isset($_GET['url'])) {
         return new WP_Error('404', 'Missing URL parameter');
     }

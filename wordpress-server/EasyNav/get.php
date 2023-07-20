@@ -1,143 +1,87 @@
 <?php
-if( !isset($_GET['url'])){
-    return http_response_code(404);
-}
-
-require "./Favicon.php";
-
-$favicon = new \Jerrybendy\Favicon\Favicon;
-
-
-/* ------ 参数设置 ------ */
-
-$defaultIco='favicon.png';   //默认图标路径
-$expire = 2592000;           //缓存有效期30天, 单位为:秒，为0时不缓存
-
-/* ------ 参数设置 ------ */
-
-
-
 /**
- * 设置默认图标
+ * php获取网站favicon图标
+ * 版本：v1.0
+ * 编写：沈唁志
+ * 时间：2018/3/8
  */
-$favicon->setDefaultIcon($defaultIco);
 
-/**
- * 检测URL参数
- */
-$url = $_GET['url'];
+header('Content-type: image/x-icon');   //输出的是图标格式
+include_once("Favicon.php");
 
-/*
- * 格式化 URL, 并尝试读取缓存
- */
-$formatUrl = $favicon->formatUrl($url);
-if($formatUrl){
-    if($expire == 0){
-        $favicon->getFavicon($formatUrl, false);
-        exit;
-    } else {
-        $defaultMD5 = md5(file_get_contents($defaultIco));
+$dir = 'cache'; //图标缓存目录
 
-        /**
-         * 2023-02-20
-         * 增加刷新缓存参数：refresh=true 如：https://域名?url=www.iowen.cn&refresh=true
-         */
-        if( !isset($_GET['refresh']) || ( isset($_GET['refresh']) && $_GET['refresh']!='true' ) ){
-            $data = Cache::get($formatUrl,$defaultMD5,$expire);
-            if ($data !== NULL) {
-                foreach ($favicon->getHeader() as $header) {
-                    @header($header);
-                }
-                echo $data;
-                exit;
-            }
-        }
+//如果缓存目录不存在则创建
+if (!is_dir($dir)) mkdir($dir,0777,true) or die('创建缓存目录失败！');
 
-        /**
-         * 缓存中没有指定的内容时, 重新获取内容并缓存起来
-         */
-        $content = $favicon->getFavicon($formatUrl, TRUE);
+$url = getParam('url'); //获取传过来的链接参数
 
-        if( md5($content) == $defaultMD5 ){
-            $expire = 43200; //如果返回默认图标，设置过期时间为12小时。Cache::get 方法中需同时修改
-        }
+//没有url参数，输出默认图像
+if(!$url) echoFav();
 
-        Cache::set($formatUrl, $content, $expire);
+$http = '';
 
-        foreach ($favicon->getHeader() as $header) {
-            @header($header);
-        }
-
-        echo $content;
-        exit;
-    }
-}else{
-    return http_response_code(404);
-}
-
-/**
- * 缓存类
- */
-class Cache
+//如果网页不是http://开头的，就给他加上 
+if(substr($url, 0, 4) != 'http')
 {
-    /**
-     * 获取缓存的值, 不存在时返回 null
-     *
-     * @param $key
-     * @param $default  默认图片
-     * @param $expire   过期时间
-     * @return string
-     */
-    public static function get($key, $default, $expire)
-    {
-        $dir = 'cache'; //图标缓存目录
-       
-        //$f = md5( strtolower( $key ) );
-        $f = parse_url($key)['host'];
-
-        $a = $dir . '/' . $f . '.txt';
-
-        if(is_file($a)){
-            $data = file_get_contents($a);
-            if( md5($data) == $default ){
-                $expire = 43200; //如果返回默认图标，过期时间为12小时。
-            }
-            if( (time() - filemtime($a)) > $expire ){
-                return null;
-            }
-            else{
-                return $data;
-            }
-		}
-        else{
-            return null;
-        }
-    }
-
-    /**
-     * 设置缓存
-     *
-     * @param $key
-     * @param $value
-     * @param $expire   过期时间
-     */
-    public static function set($key, $value, $expire)
-    {
-        $dir = 'cache'; //图标缓存目录
-        
-        //$f = md5( strtolower( $key ) );
-        $f = parse_url($key)['host'];
-
-        $a = $dir . '/' . $f . '.txt';
-        
-        //如果缓存目录不存在则创建
-        if (!is_dir($dir)) mkdir($dir,0777,true) or die('创建缓存目录失败！');
-
-        if ( !is_file($a) || (time() - filemtime($a)) > $expire ) {
-            $imgdata = fopen($a, "w") or die("Unable to open file!");  //w  重写  a追加
-            fwrite($imgdata, $value);
-            fclose($imgdata); 
-            clearstatcache();
-        }
-    }
+    $url = 'http://'.$url;
 }
+else if(substr($url, 0, 5) == 'https')
+{
+    $http = 'https://'; //如果是https头，传到后面取图标时加上。防止出现302重定向
+}
+
+
+//非法域名时调用默认文件
+if(isUrl($url) != '1') echoFav();
+
+$arr = parse_url($url); //分解目标域名
+$domain = $arr['host']; //没有头和尾的裸域名
+
+$fav = $dir."/".$domain.".ico"; //图标保存的路径和名称
+
+//调用缓存文件
+if (file_exists($fav)) //有缓存就直接输出缓存
+{
+    $file = file_get_contents($fav);
+    if($file) die($file);
+}
+
+//直接尝试站点根目录下的favion.ico文件  (通用方法)
+getFav($http.$domain."/favicon.ico", $fav); 
+
+//直接请求目标网址并匹配<meta>标签中的favion.ico
+$curl = get_url_content($url);
+$file = $curl['exec'];
+preg_match('|href\s*=\s*[\"\']([^<>]*?)\.ico[\"\'\?]|i',$file,$a);    //正则匹配
+
+//没有匹配结果
+if(!(isset($a[1]) && $a[1]))
+{
+    getFav('http://cdn.website.h.qhimg.com/index.php?domain='.$domain, $fav);  //来自360的api
+    echoFav($fav);
+}
+
+$a[1] .='.ico'; //加上后缀名
+getFav($a[1], $fav);    //如果favicon自身带有完整链接
+
+if(substr($a[1], 0, 1) == '/')  //相对路径的处理
+{
+    $a[1] = substr($a[1], 1);
+}
+if(substr($a[1], 0, 3) == '../')  //相对路径的处理
+{
+    $a[1] = substr($a[1], 3);
+}
+if(substr($a[1], 0, 2) == './')  //相对路径的处理
+{
+    $a[1] = substr($a[1], 2);
+}
+
+$u = $http.$domain.'/'.$a[1];   //手动加上链接再试一次
+getFav($u, $fav);
+
+//上面的方法都没法获取
+getFav('http://cdn.website.h.qhimg.com/index.php?domain='.$domain, $fav);  //来自360的api
+echoFav($fav);
+?> 
