@@ -27,7 +27,7 @@ export default defineConfig({
       proxy: {
         // https://navadmin.aj0.cn  更改为自己的网站
         '/jwt-auth': {
-          target: 'https://navadmin.117112.xyz/wp-json/',
+          target: 'https://navadmin.aj0.cn/wp-json/',
           changeOrigin: true,
         },
       },

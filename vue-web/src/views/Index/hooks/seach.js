@@ -92,13 +92,12 @@ export function seachHook(opt = {}) {
         window[callbackName] = (data) => {
           // 在这里处理返回的提示词数据
           const suggestionsData = data.s;
-          console.log(suggestionsData);
           keywordArr.value = suggestionsData
           // 移除创建的 script 标签
           document.head.removeChild(script);
         };
         // 设置 script 标签的 src 属性，触发 JSONP 请求
-        script.src = `http://suggestion.baidu.com/su?wd=${keyword.value}&cb=${callbackName}`;
+        script.src = `https://suggestion.baidu.com/su?wd=${keyword.value}&cb=${callbackName}`;
         // 将 script 标签添加到文档头部
         document.head.appendChild(script);
       };
